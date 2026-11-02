@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#244b3a">
+<title>Birding & Wellbeing</title>
+<style>
+:root {
+  --forest:#244b3a;
+  --deep:#183629;
+  --sage:#e6eee5;
+  --cream:#f7f6ef;
+  --gold:#c59b55;
+  --text:#29372f;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--cream);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  background:var(--forest);
+  color:white;
+  padding:28px 22px 32px;
+  border-radius:0 0 25px 25px;
+}
+.top {font-size:13px;opacity:.8}
+h1 {font-size:27px;margin:13px 0 7px}
+header p {margin:0;color:#dce8dd;font-size:14px}
+main {padding:20px;max-width:650px;margin:auto}
+.date {color:#65776a;font-size:13px;margin-bottom:18px}
+h2 {font-size:19px;margin:25px 0 13px}
+.card {
+  background:white;
+  padding:19px;
+  border-radius:17px;
+  margin-bottom:13px;
+  box-shadow:0 3px 12px #203b3010;
+}
+.card h3 {margin:0 0 7px;font-size:17px}
+.card p {font-size:13px;color:#718075;line-height:1.5}
+.feature {
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.emoji {
+  background:var(--sage);
+  width:52px;height:52px;
+  display:grid;place-items:center;
+  border-radius:15px;font-size:25px;
+}
+.feature h3 {margin:0}
+button {
+  border:0;border-radius:12px;
+  background:var(--forest);
+  color:white;padding:13px 17px;
+  font-size:14px;font-weight:bold;
+  cursor:pointer;
+}
+button.secondary {
+  background:var(--sage);color:var(--forest);
+}
+.stats {
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.stat {text-align:center}
+.stat strong {display:block;font-size:27px;color:var(--forest)}
+.stat span {font-size:12px;color:#718075}
+input,textarea {
+  width:100%;padding:13px;
+  border:1px solid #dce3d9;
+  border-radius:10px;
+  margin:8px 0 14px;
+  font:inherit;background:white;
+}
+textarea {min-height:85px}
+label {font-size:13px;font-weight:bold}
+nav {
+  position:sticky;bottom:0;
+  background:white;border-top:1px solid #e2e7df;
+  display:flex;justify-content:space-around;
+  padding:12px 4px;
+}
+nav button {
+  background:transparent;color:var(--forest);
+  padding:8px 5px;font-size:11px;
+}
+nav button.active {background:var(--sage)}
+.page {display:none}
+.page.active {display:block}
+#walkStatus {color:var(--forest);font-weight:bold}
+footer {text-align:center;color:#89958a;font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">YOUR PERSONAL NATURE COMPANION</div>
+  <h1>Birding & Wellbeing 🌿</h1>
+  <p>Slow down, step outside and discover nature.</p>
+</header>
+
+<main>
+  <div class="date" id="today"></div>
+
+  <section class="page active" id="home">
+    <h2>Welcome back</h2>
+    <div class="card">
+      <div class="feature">
+        <div class="emoji">🌳</div>
+        <div>
+          <h3>Time outdoors</h3>
+          <p>Make today a little more peaceful.</p>
+        </div>
+      </div>
+      <button onclick="startWalk()">Start a wellbeing walk</button>
+      <p id="walkStatus">Your next walk is waiting.</p>
+    </div>
+
+    <h2>Your nature journal</h2>
+    <div class="stats">
+      <div class="card stat">
+        <strong id="birdCount">0</strong>
+        <span>Bird sightings</span>
+      </div>
+      <div class="card stat">
+        <strong id="walkCount">0</strong>
+        <span>Walks recorded</span>
+      </div>
+    </div>
+
+    <h2>Explore your companion</h2>
+    <div class="card feature" onclick="showPage('birds')">
+      <div class="emoji">🐦</div>
+      <div><h3>Birding log</h3><p>Record today's sightings.</p></div>
+    </div>
+    <div class="card feature" onclick="showPage('wellbeing')">
+      <div class="emoji">🍃</div>
+      <div><h3>Wellbeing journal</h3><p>Capture how nature makes you feel.</p></div>
+    </div>
+    <div class="card feature" onclick="showPage('history')">
+      <div class="emoji">📖</div>
+      <div><h3>My nature history</h3><p>Look back on your experiences.</p></div>
+    </div>
+  </section>
+
+  <section class="page" id="birds">
+    <h2>🐦 Birding log</h2>
+    <div class="card">
+      <h3>Record a sighting</h3>
+      <label>Bird species</label>
+      <input id="birdName" placeholder="e.g. European Robin">
+      <label>Location</label>
+      <input id="birdPlace" placeholder="e.g. Inskip woodland">
+      <label>Notes</label>
+      <textarea id="birdNotes" placeholder="What did you observe?"></textarea>
+      <button onclick="addBird()">Save bird sighting</button>
+    </div>
+    <h2>Recent sightings</h2>
+    <div id="birdList"></div>
+  </section>
+
+  <section class="page" id="wellbeing">
+    <h2>🌳 Wellbeing journal</h2>
+    <div class="card">
+      <h3>Four mindful questions</h3>
+      <label>1. How are you feeling?</label>
+      <textarea id="feeling" placeholder="How are you today?"></textarea>
+      <label>2. What can you see around you?</label>
+      <textarea id="seeing" placeholder="Notice the trees, birds and landscape..."></textarea>
+      <label>3. What can you hear or smell?</label>
+      <textarea id="senses" placeholder="Birdsong, leaves, fresh air..."></textarea>
+      <label>4. Is nature helping you relax?</label>
+      <textarea id="relaxing" placeholder="Take a moment to reflect..."></textarea>
+      <button onclick="saveJournal()">Save journal entry</button>
+    </div>
+  </section>
+
+  <section class="page" id="history">
+    <h2>📖 My nature history</h2>
+    <div id="historyList"></div>
+  </section>
+</main>
+
+<nav>
+  <button class="active" onclick="showPage('home',this)">🏡<br>Home</button>
+  <button onclick="showPage('birds',this)">🐦<br>Birds</button>
+  <button onclick="showPage('wellbeing',this)">🌿<br>Wellbeing</button>
+  <button onclick="showPage('history',this)">📖<br>History</button>
+</nav>
+
+<footer>Made for a life closer to nature 🌳</footer>
+
+<script>
+const get = key => JSON.parse(localStorage.getItem(key)||"[]");
+const put = (key,data) => localStorage.setItem(key,JSON.stringify(data));
+
+document.getElementById("today").textContent =
+  new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+
+function showPage(id,btn) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  update();
+}
+
+function addBird() {
+  const name=document.getElementById("birdName").value.trim();
+  if(!name) return alert("Please enter a bird species.");
+  const birds=get("birds");
+  birds.unshift({name,place:document.getElementById("birdPlace").value,
+    notes:document.getElementById("birdNotes").value,
+    date:new Date().toLocaleString("en-GB")});
+  put("birds",birds);
+  document.getElementById("birdName").value="";
+  document.getElementById("birdPlace").value="";
+  document.getElementById("birdNotes").value="";
+  update();
+  alert("Bird sighting saved!");
+}
+
+function startWalk() {
+  const walks=get("walks");
+  walks.unshift({date:new Date().toLocaleString("en-GB"),note:"Wellbeing walk"});
+  put("walks",walks);
+  document.getElementById("walkStatus").textContent="Walk started! Enjoy your time outdoors.";
+  update();
+}
+
+function saveJournal() {
+  const entry={date:new Date().toLocaleString("en-GB"),
+    feeling:document.getElementById("feeling").value,
+    seeing:document.getElementById("seeing").value,
+    senses:document.getElementById("senses").value,
+    relaxing:document.getElementById("relaxing").value};
+  const entries=get("journals");
+  entries.unshift(entry);
+  put("journals",entries);
+  alert("Your journal entry has been saved.");
+  document.querySelectorAll("#wellbeing textarea").forEach(t=>t.value="");
+  update();
+}
+
+function update() {
+  const birds=get("birds"),walks=get("walks"),journals=get("journals");
+  document.getElementById("birdCount").textContent=birds.length;
+  document.getElementById("walkCount").textContent=walks.length;
+  document.getElementById("birdList").innerHTML=birds.map(b=>
+    `<div class="card"><h3>🐦 ${escapeHTML(b.name)}</h3><p>${escapeHTML(b.place||"Location not recorded")} · ${escapeHTML(b.date)}</p><p>${escapeHTML(b.notes||"")}</p></div>`).join("")||"<p>No sightings recorded yet.</p>";
+  document.getElementById("historyList").innerHTML=
+    [...walks.map(w=>({type:"Walk",date:w.date})),
+    ...journals.map(j=>({type:"Journal entry",date:j.date}))]
+    .map(x=>`<div class="card"><h3>${x.type}</h3><p>${escapeHTML(x.date)}</p></div>`).join("")||"<p>Your history will appear here.</p>";
+}
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+update();
+</script>
+</body>
+</html>
