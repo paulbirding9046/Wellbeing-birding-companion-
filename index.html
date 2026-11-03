@@ -1,269 +1,183 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#244b3a">
-<title>Birding & Wellbeing</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#214b3b">
+<title>Birding & Wellbeing Companion</title>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root {
-  --forest:#244b3a;
-  --deep:#183629;
-  --sage:#e6eee5;
-  --cream:#f7f6ef;
-  --gold:#c59b55;
-  --text:#29372f;
-}
-* {box-sizing:border-box}
-body {
-  margin:0;
-  background:var(--cream);
-  color:var(--text);
-  font-family:Arial,sans-serif;
-}
-header {
-  background:var(--forest);
-  color:white;
-  padding:28px 22px 32px;
-  border-radius:0 0 25px 25px;
-}
-.top {font-size:13px;opacity:.8}
-h1 {font-size:27px;margin:13px 0 7px}
-header p {margin:0;color:#dce8dd;font-size:14px}
-main {padding:20px;max-width:650px;margin:auto}
-.date {color:#65776a;font-size:13px;margin-bottom:18px}
-h2 {font-size:19px;margin:25px 0 13px}
-.card {
-  background:white;
-  padding:19px;
-  border-radius:17px;
-  margin-bottom:13px;
-  box-shadow:0 3px 12px #203b3010;
-}
-.card h3 {margin:0 0 7px;font-size:17px}
-.card p {font-size:13px;color:#718075;line-height:1.5}
-.feature {
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-.emoji {
-  background:var(--sage);
-  width:52px;height:52px;
-  display:grid;place-items:center;
-  border-radius:15px;font-size:25px;
-}
-.feature h3 {margin:0}
-button {
-  border:0;border-radius:12px;
-  background:var(--forest);
-  color:white;padding:13px 17px;
-  font-size:14px;font-weight:bold;
-  cursor:pointer;
-}
-button.secondary {
-  background:var(--sage);color:var(--forest);
-}
-.stats {
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.stat {text-align:center}
-.stat strong {display:block;font-size:27px;color:var(--forest)}
-.stat span {font-size:12px;color:#718075}
-input,textarea {
-  width:100%;padding:13px;
-  border:1px solid #dce3d9;
-  border-radius:10px;
-  margin:8px 0 14px;
-  font:inherit;background:white;
-}
-textarea {min-height:85px}
-label {font-size:13px;font-weight:bold}
-nav {
-  position:sticky;bottom:0;
-  background:white;border-top:1px solid #e2e7df;
-  display:flex;justify-content:space-around;
-  padding:12px 4px;
-}
-nav button {
-  background:transparent;color:var(--forest);
-  padding:8px 5px;font-size:11px;
-}
-nav button.active {background:var(--sage)}
-.page {display:none}
-.page.active {display:block}
-#walkStatus {color:var(--forest);font-weight:bold}
-footer {text-align:center;color:#89958a;font-size:11px;padding:20px}
+:root{--green:#214b3b;--green2:#2e624c;--pale:#e8efe7;--cream:#f7f7ef;--ink:#26372f;--muted:#718078;--white:#fff;--red:#a83c36;--line:#e5e9e1;--shadow:0 5px 22px #1d352011}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:90px}
+header{background:var(--green);color:white;padding:30px 22px 28px;border-radius:0 0 28px 28px}
+.kicker{font-size:12px;letter-spacing:.09em;opacity:.8;text-transform:uppercase}h1{font-size:27px;margin:10px 0 5px}header p{margin:0;color:#d9e6dc}
+main{max-width:760px;margin:auto;padding:20px 17px}.date{color:var(--muted);margin:6px 0 20px}
+h2{font-size:21px;margin:24px 0 12px}.card{background:white;border-radius:22px;padding:19px;margin:13px 0;box-shadow:var(--shadow)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.spread{justify-content:space-between}.muted{color:var(--muted)}.small{font-size:13px}.big{font-size:34px;font-weight:750;color:var(--green);font-variant-numeric:tabular-nums}
+button,.button{border:0;border-radius:13px;background:var(--green);color:white;padding:13px 17px;font-size:15px;font-weight:700;cursor:pointer}
+button.secondary{background:var(--pale);color:var(--green)}button.danger{background:#f8e9e7;color:var(--red)}button:disabled{opacity:.45}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit;background:white;color:var(--ink);margin:5px 0 12px}
+label{font-size:13px;font-weight:650;color:#53645a}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--pale);border-radius:16px;padding:13px;text-align:center}.stat strong{display:block;font-size:24px;color:var(--green)}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#fffffff2;backdrop-filter:blur(12px);display:flex;justify-content:space-around;padding:10px 5px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:1000}
+.tabs button{background:transparent;color:var(--green);padding:8px 10px;font-size:12px;min-width:65px}.tabs button.active{background:var(--pale)}
+.hidden{display:none!important}.notice{background:#f1f5ed;border-radius:12px;padding:12px;font-size:13px;color:#53645a;margin:10px 0}
+#map{height:260px;border-radius:16px;margin-top:12px;background:#e7ece5}.pill{font-size:12px;border-radius:99px;padding:5px 9px;background:var(--pale);color:var(--green)}
+.entry{border-top:1px solid var(--line);padding:13px 0}.entry:first-child{border:0}.entry h3{margin:0 0 4px;font-size:16px}.entry p{margin:4px 0;color:var(--muted);font-size:13px}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.actions button{font-size:12px;padding:8px 11px}
+.weather-icon{font-size:28px}.empty{text-align:center;color:var(--muted);padding:22px 8px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:390px){.grid{gap:7px}.card{padding:15px}h1{font-size:24px}}
 </style>
 </head>
 <body>
-
-<header>
-  <div class="top">YOUR PERSONAL NATURE COMPANION</div>
-  <h1>Birding & Wellbeing 🌿</h1>
-  <p>Slow down, step outside and discover nature.</p>
-</header>
-
+<header><div class="kicker">Your personal nature companion</div><h1>Birding & Wellbeing 🌿</h1><p>Slow down, step outside and discover nature.</p></header>
 <main>
-  <div class="date" id="today"></div>
+<div class="date" id="today"></div>
+<section id="home">
+<h2>Welcome back</h2>
+<div class="card">
+<div class="row"><div style="font-size:34px">🌳</div><div><b>Time outdoors</b><div class="muted small">Make today a little more peaceful.</div></div></div>
+<div class="row spread" style="margin-top:18px"><div><div class="big" id="homeTimer">00:00</div><div class="small muted" id="homeWalkState">No walk in progress</div></div><button id="homeStart">Start a wellbeing walk</button></div>
+</div>
+<div class="grid">
+<div class="stat"><strong id="birdCount">0</strong><span class="small muted">Bird sightings</span></div>
+<div class="stat"><strong id="walkCount">0</strong><span class="small muted">Walks recorded</span></div>
+</div>
+<h2>Weather where you are</h2>
+<div class="card"><div class="row"><span class="weather-icon" id="weatherIcon">🌤️</span><div><b id="weatherText">Weather not loaded</b><div class="muted small" id="weatherPlace">Allow location to get local weather</div></div><div style="margin-left:auto" class="big" id="weatherTemp">--°</div></div><div class="small muted" id="weatherExtra"></div><button class="secondary" id="weatherRefresh" style="margin-top:12px">Refresh weather</button></div>
+<h2>Explore your companion</h2>
+<div class="card"><b>🐦 Birding log</b><p class="muted small">Record the birds you spot and keep your sightings together.</p><button class="secondary" onclick="showTab('birds')">Open birding log</button></div>
+<div class="card"><b>📖 Walk history</b><p class="muted small">Review your walks, routes and observations.</p><button class="secondary" onclick="showTab('history')">View walk history</button></div>
+</section>
 
-  <section class="page active" id="home">
-    <h2>Welcome back</h2>
-    <div class="card">
-      <div class="feature">
-        <div class="emoji">🌳</div>
-        <div>
-          <h3>Time outdoors</h3>
-          <p>Make today a little more peaceful.</p>
-        </div>
-      </div>
-      <button onclick="startWalk()">Start a wellbeing walk</button>
-      <p id="walkStatus">Your next walk is waiting.</p>
-    </div>
+<section id="walk" class="hidden">
+<h2>Wellbeing walk</h2>
+<div class="card">
+<div class="row spread"><span class="pill" id="walkStatus">Not started</span><span class="small muted" id="gpsStatus">GPS not active</span></div>
+<div style="text-align:center;padding:17px 0 10px"><div class="big" id="timer">00:00:00</div><div class="muted small">Elapsed walking time</div></div>
+<div class="grid"><div class="stat"><strong id="distance">0.00</strong><span class="small muted">Miles</span></div><div class="stat"><strong id="points">0</strong><span class="small muted">GPS points</span></div></div>
+<div id="map"></div>
+<div class="notice" id="locationNote">Location is only accessed after you allow it. Keep this page open and your phone awake during a walk for reliable tracking.</div>
+<div class="row" style="margin-top:12px">
+<button id="startBtn">▶ Start walk</button><button id="pauseBtn" class="secondary hidden">Ⅱ Pause</button><button id="resumeBtn" class="secondary hidden">▶ Resume</button><button id="finishBtn" class="hidden">■ Finish & save</button>
+</div>
+<button id="discardBtn" class="danger hidden" style="margin-top:10px">Discard this walk</button>
+</div>
+<div class="card">
+<h3 style="margin-top:0">A moment to notice</h3>
+<label for="walkNote">Thoughts, feelings or things you noticed</label><textarea id="walkNote" rows="3" placeholder="What can you see, hear or smell? Is being outdoors helping you relax?"></textarea>
+</div>
+</section>
 
-    <h2>Your nature journal</h2>
-    <div class="stats">
-      <div class="card stat">
-        <strong id="birdCount">0</strong>
-        <span>Bird sightings</span>
-      </div>
-      <div class="card stat">
-        <strong id="walkCount">0</strong>
-        <span>Walks recorded</span>
-      </div>
-    </div>
+<section id="birds" class="hidden">
+<h2>Birding log 🐦</h2>
+<div class="card">
+<h3 style="margin-top:0">Add a sighting</h3>
+<label>Bird name</label><input id="birdName" placeholder="e.g. European Robin">
+<label>Number seen</label><input id="birdNumber" type="number" min="1" value="1">
+<label>Location (optional)</label><input id="birdLocation" placeholder="e.g. Inskip village">
+<label>Notes (optional)</label><textarea id="birdNotes" rows="2" placeholder="Behaviour, habitat, call..."></textarea>
+<button id="addBird">Save sighting</button>
+</div>
+<div class="card"><div class="row spread"><b>Your sightings</b><span class="pill" id="birdTotal">0 records</span></div><div id="birdList" class="muted small">No sightings recorded yet.</div></div>
+</section>
 
-    <h2>Explore your companion</h2>
-    <div class="card feature" onclick="showPage('birds')">
-      <div class="emoji">🐦</div>
-      <div><h3>Birding log</h3><p>Record today's sightings.</p></div>
-    </div>
-    <div class="card feature" onclick="showPage('wellbeing')">
-      <div class="emoji">🍃</div>
-      <div><h3>Wellbeing journal</h3><p>Capture how nature makes you feel.</p></div>
-    </div>
-    <div class="card feature" onclick="showPage('history')">
-      <div class="emoji">📖</div>
-      <div><h3>My nature history</h3><p>Look back on your experiences.</p></div>
-    </div>
-  </section>
-
-  <section class="page" id="birds">
-    <h2>🐦 Birding log</h2>
-    <div class="card">
-      <h3>Record a sighting</h3>
-      <label>Bird species</label>
-      <input id="birdName" placeholder="e.g. European Robin">
-      <label>Location</label>
-      <input id="birdPlace" placeholder="e.g. Inskip woodland">
-      <label>Notes</label>
-      <textarea id="birdNotes" placeholder="What did you observe?"></textarea>
-      <button onclick="addBird()">Save bird sighting</button>
-    </div>
-    <h2>Recent sightings</h2>
-    <div id="birdList"></div>
-  </section>
-
-  <section class="page" id="wellbeing">
-    <h2>🌳 Wellbeing journal</h2>
-    <div class="card">
-      <h3>Four mindful questions</h3>
-      <label>1. How are you feeling?</label>
-      <textarea id="feeling" placeholder="How are you today?"></textarea>
-      <label>2. What can you see around you?</label>
-      <textarea id="seeing" placeholder="Notice the trees, birds and landscape..."></textarea>
-      <label>3. What can you hear or smell?</label>
-      <textarea id="senses" placeholder="Birdsong, leaves, fresh air..."></textarea>
-      <label>4. Is nature helping you relax?</label>
-      <textarea id="relaxing" placeholder="Take a moment to reflect..."></textarea>
-      <button onclick="saveJournal()">Save journal entry</button>
-    </div>
-  </section>
-
-  <section class="page" id="history">
-    <h2>📖 My nature history</h2>
-    <div id="historyList"></div>
-  </section>
+<section id="history" class="hidden">
+<h2>Your walk history</h2>
+<div class="card"><div class="row spread"><b>Recorded walks</b><span class="pill" id="historyCount">0 walks</span></div><div id="walkList" class="muted small">No completed walks yet.</div></div>
+<div class="card"><b>Back up your records</b><p class="muted small">Export a copy of your walks and sightings. Keep this file somewhere safe.</p><div class="row"><button id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input type="file" id="importFile" accept="application/json" class="hidden"></div><div class="notice">Your records are stored in this browser on this device. They are not automatically shared with Claire or synced to another phone.</div></div>
+</section>
 </main>
-
-<nav>
-  <button class="active" onclick="showPage('home',this)">🏡<br>Home</button>
-  <button onclick="showPage('birds',this)">🐦<br>Birds</button>
-  <button onclick="showPage('wellbeing',this)">🌿<br>Wellbeing</button>
-  <button onclick="showPage('history',this)">📖<br>History</button>
+<footer>Made for slower walks and closer attention to nature. Your location and journal stay in this browser.</footer>
+<nav class="tabs">
+<button class="active" data-tab="home" onclick="showTab('home')">🏡<br>Home</button>
+<button data-tab="birds" onclick="showTab('birds')">🐦<br>Birds</button>
+<button data-tab="walk" onclick="showTab('walk')">🌿<br>Wellbeing</button>
+<button data-tab="history" onclick="showTab('history')">📖<br>History</button>
 </nav>
-
-<footer>Made for a life closer to nature 🌳</footer>
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const get = key => JSON.parse(localStorage.getItem(key)||"[]");
-const put = (key,data) => localStorage.setItem(key,JSON.stringify(data));
-
-document.getElementById("today").textContent =
-  new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-
-function showPage(id,btn) {
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
-  update();
+const STORE='birdingWellbeing_v2';
+let data={walks:[],birds:[]},session=null,watchId=null,tick=null,map=null,line=null,marker=null,lastWeather=0;
+const $=id=>document.getElementById(id);
+function load(){
+ try{const x=JSON.parse(localStorage.getItem(STORE)||'null');if(x&&Array.isArray(x.walks)&&Array.isArray(x.birds))data=x;}catch(e){}
+ // Best-effort migration of older app records held in this same browser.
+ if(!data.walks.length&&!data.birds.length){
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k||k===STORE)continue;
+   try{const v=JSON.parse(localStorage.getItem(k));if(!v)continue;
+    const arr=Array.isArray(v)?v:(v.walks||v.birdSightings||v.sightings||v.entries||[]);
+    if(!Array.isArray(arr))continue;
+    if(/walk/i.test(k)||arr.some(a=>a&&('distance'in a||'duration'in a||'startTime'in a)))data.walks=arr.map(normalWalk);
+    else if(/bird|sighting/i.test(k)||arr.some(a=>a&&(/bird/i.test(a.type||'')||a.species||a.birdName)))data.birds=arr.map(normalBird);
+   }catch(e){}
+  }
+ }
+ save();
 }
-
-function addBird() {
-  const name=document.getElementById("birdName").value.trim();
-  if(!name) return alert("Please enter a bird species.");
-  const birds=get("birds");
-  birds.unshift({name,place:document.getElementById("birdPlace").value,
-    notes:document.getElementById("birdNotes").value,
-    date:new Date().toLocaleString("en-GB")});
-  put("birds",birds);
-  document.getElementById("birdName").value="";
-  document.getElementById("birdPlace").value="";
-  document.getElementById("birdNotes").value="";
-  update();
-  alert("Bird sighting saved!");
+function normalWalk(w){return {id:w.id||crypto.randomUUID(),date:w.date||w.startedAt||w.startTime||new Date().toISOString(),duration:Number(w.durationSeconds??w.duration??0),distance:Number(w.distanceMiles??w.distance??0),note:w.note||w.notes||'',route:Array.isArray(w.route)?w.route:[]};}
+function normalBird(b){return {id:b.id||crypto.randomUUID(),name:b.name||b.species||b.birdName||b.title||'Unidentified bird',number:Number(b.number||b.count||1),location:b.location||'',notes:b.notes||b.note||'',date:b.date||b.timestamp||new Date().toISOString()};}
+function save(){localStorage.setItem(STORE,JSON.stringify(data));render();}
+function showTab(tab){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$(tab).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='walk')setTimeout(initMap,150);if(tab==='history'||tab==='birds')render();}
+window.showTab=showTab;
+function fmt(sec){sec=Math.max(0,Math.floor(sec));return [Math.floor(sec/3600),Math.floor(sec%3600/60),sec%60].map(n=>String(n).padStart(2,'0')).join(':')}
+function elapsed(){if(!session)return 0;return session.elapsed+(session.status==='active'?(Date.now()-session.segmentStart)/1000:0)}
+function updateTimer(){const t=fmt(elapsed());$('timer').textContent=t;$('homeTimer').textContent=t;}
+function setSessionUI(){
+ const active=!!session,paused=active&&session.status==='paused';
+ $('walkStatus').textContent=!active?'Not started':paused?'Paused':'Walk in progress';
+ $('homeWalkState').textContent=!active?'No walk in progress':paused?'Walk paused':'Walk in progress';
+ $('startBtn').classList.toggle('hidden',active);$('pauseBtn').classList.toggle('hidden',!active||paused);$('resumeBtn').classList.toggle('hidden',!paused);$('finishBtn').classList.toggle('hidden',!active);$('discardBtn').classList.toggle('hidden',!active);
+ updateTimer();
 }
-
-function startWalk() {
-  const walks=get("walks");
-  walks.unshift({date:new Date().toLocaleString("en-GB"),note:"Wellbeing walk"});
-  put("walks",walks);
-  document.getElementById("walkStatus").textContent="Walk started! Enjoy your time outdoors.";
-  update();
+function startWalk(){
+ if(session)return;
+ session={id:crypto.randomUUID(),start:new Date().toISOString(),segmentStart:Date.now(),elapsed:0,status:'active',route:[],distance:0,note:''};
+ setSessionUI();startGPS();tick=setInterval(updateTimer,1000);showTab('walk');
 }
-
-function saveJournal() {
-  const entry={date:new Date().toLocaleString("en-GB"),
-    feeling:document.getElementById("feeling").value,
-    seeing:document.getElementById("seeing").value,
-    senses:document.getElementById("senses").value,
-    relaxing:document.getElementById("relaxing").value};
-  const entries=get("journals");
-  entries.unshift(entry);
-  put("journals",entries);
-  alert("Your journal entry has been saved.");
-  document.querySelectorAll("#wellbeing textarea").forEach(t=>t.value="");
-  update();
+function pauseWalk(){if(!session||session.status!=='active')return;session.elapsed+= (Date.now()-session.segmentStart)/1000;session.status='paused';stopGPS();setSessionUI();}
+function resumeWalk(){if(!session||session.status!=='paused')return;session.status='active';session.segmentStart=Date.now();setSessionUI();startGPS();}
+function finishWalk(){if(!session)return;if(session.status==='active')session.elapsed+=(Date.now()-session.segmentStart)/1000;stopGPS();clearInterval(tick);session.note=$('walkNote').value.trim();data.walks.unshift({id:session.id,date:session.start,duration:Math.round(session.elapsed),distance:session.distance,note:session.note,route:session.route});session=null;$('walkNote').value='';setSessionUI();save();showTab('history');}
+function discardWalk(){if(!session)return;if(!confirm('Discard this walk? It will not be saved.'))return;stopGPS();clearInterval(tick);session=null;$('walkNote').value='';setSessionUI();render();}
+function startGPS(){
+ if(!navigator.geolocation){$('gpsStatus').textContent='GPS unavailable';return;}
+ $('gpsStatus').textContent='Requesting GPS…';
+ watchId=navigator.geolocation.watchPosition(pos=>{
+  const p={lat:pos.coords.latitude,lon:pos.coords.longitude,accuracy:pos.coords.accuracy,time:new Date(pos.timestamp).toISOString()};
+  if(!session||session.status!=='active')return;
+  const prev=session.route[session.route.length-1];
+  if(!prev||haversine(prev,p)>0.004){if(prev)session.distance+=haversine(prev,p);session.route.push(p);$('points').textContent=session.route.length;$('distance').textContent=session.distance.toFixed(2);drawRoute();saveSessionDraft();}
+  $('gpsStatus').textContent=`GPS active · ±${Math.round(p.accuracy)} m`;$('locationNote').textContent=`Current position: ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}. GPS updates while this page is open.`;
+  if(!lastWeather||Date.now()-lastWeather>15*60*1000)fetchWeather(p.lat,p.lon);
+ },err=>{$('gpsStatus').textContent='GPS: '+({1:'Permission denied',2:'Position unavailable',3:'Timed out'}[err.code]||err.message);$('locationNote').textContent='GPS could not be read. Check browser location permission and ensure precise location is enabled. You can still record the walk and timer.';},{enableHighAccuracy:true,maximumAge:3000,timeout:15000});
 }
-
-function update() {
-  const birds=get("birds"),walks=get("walks"),journals=get("journals");
-  document.getElementById("birdCount").textContent=birds.length;
-  document.getElementById("walkCount").textContent=walks.length;
-  document.getElementById("birdList").innerHTML=birds.map(b=>
-    `<div class="card"><h3>🐦 ${escapeHTML(b.name)}</h3><p>${escapeHTML(b.place||"Location not recorded")} · ${escapeHTML(b.date)}</p><p>${escapeHTML(b.notes||"")}</p></div>`).join("")||"<p>No sightings recorded yet.</p>";
-  document.getElementById("historyList").innerHTML=
-    [...walks.map(w=>({type:"Walk",date:w.date})),
-    ...journals.map(j=>({type:"Journal entry",date:j.date}))]
-    .map(x=>`<div class="card"><h3>${x.type}</h3><p>${escapeHTML(x.date)}</p></div>`).join("")||"<p>Your history will appear here.</p>";
+function stopGPS(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;}$('gpsStatus').textContent='GPS paused';}
+function saveSessionDraft(){try{localStorage.setItem('birdingWellbeing_activeDraft',JSON.stringify(session));}catch(e){}}
+function haversine(a,b){const R=3958.7613,rad=x=>x*Math.PI/180,dLat=rad(b.lat-a.lat),dLon=rad(b.lon-a.lon);const q=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(q));}
+function initMap(){if(!window.L||map)return;map=L.map('map').setView([53.85,-2.75],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:19}).addTo(map);line=L.polyline([],{color:'#2e624c',weight:5}).addTo(map);if(session)drawRoute();setTimeout(()=>map.invalidateSize(),100);}
+function drawRoute(){if(!map||!session)return;const pts=session.route.map(p=>[p.lat,p.lon]);line.setLatLngs(pts);if(pts.length){if(!marker)marker=L.marker(pts[pts.length-1]).addTo(map);else marker.setLatLng(pts[pts.length-1]);map.setView(pts[pts.length-1],16);}}
+async function fetchWeather(lat,lon){
+ try{$('weatherText').textContent='Loading local weather…';const u=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&timezone=auto`;const r=await fetch(u);if(!r.ok)throw Error('Weather service unavailable');const j=await r.json(),c=j.current;const codes={0:['☀️','Clear sky'],1:['🌤️','Mainly clear'],2:['⛅','Partly cloudy'],3:['☁️','Overcast'],45:['🌫️','Fog'],48:['🌫️','Depositing rime fog'],51:['🌦️','Light drizzle'],53:['🌦️','Drizzle'],55:['🌧️','Heavy drizzle'],61:['🌦️','Light rain'],63:['🌧️','Rain'],65:['🌧️','Heavy rain'],71:['🌨️','Light snow'],73:['🌨️','Snow'],75:['❄️','Heavy snow'],80:['🌦️','Rain showers'],81:['🌧️','Showers'],82:['⛈️','Heavy showers'],95:['⛈️','Thunderstorm'],96:['⛈️','Thunderstorm with hail'],99:['⛈️','Severe thunderstorm']};const w=codes[c.weather_code]||['🌤️','Current conditions'];$('weatherIcon').textContent=w[0];$('weatherText').textContent=w[1];$('weatherTemp').textContent=Math.round(c.temperature_2m)+'°C';$('weatherPlace').textContent='Local conditions · '+c.time.replace('T',' ');$('weatherExtra').textContent=`Feels like ${Math.round(c.apparent_temperature)}°C · Wind ${Math.round(c.wind_speed_10m)} km/h · Humidity ${c.relative_humidity_2m}% · Rain ${c.precipitation} mm`;lastWeather=Date.now();}
+ catch(e){$('weatherText').textContent='Weather unavailable';$('weatherPlace').textContent='Check your internet connection and try again.';}
 }
-function escapeHTML(s) {
-  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function getPositionForWeather(){if(!navigator.geolocation){$('weatherPlace').textContent='This browser does not support GPS.';return;}$('weatherPlace').textContent='Finding your location…';navigator.geolocation.getCurrentPosition(p=>fetchWeather(p.coords.latitude,p.coords.longitude),e=>{$('weatherPlace').textContent='Allow location access to show local weather.'},{enableHighAccuracy:true,timeout:12000,maximumAge:60000});}
+function render(){
+ $('birdCount').textContent=data.birds.reduce((n,b)=>n+(Number(b.number)||1),0);$('walkCount').textContent=data.walks.length;$('birdTotal').textContent=data.birds.length+' records';$('historyCount').textContent=data.walks.length+' walks';
+ $('birdList').innerHTML=data.birds.length?data.birds.map(b=>`<div class="entry"><h3>${esc(b.name)} <span class="pill">×${b.number||1}</span></h3><p>${dateText(b.date)}${b.location?' · '+esc(b.location):''}</p>${b.notes?`<p>${esc(b.notes)}</p>`:''}<div class="actions"><button class="secondary" onclick="editBird('${b.id}')">Edit</button><button class="danger" onclick="deleteBird('${b.id}')">Delete</button></div></div>`).join(''):'<div class="empty">No sightings recorded yet.</div>';
+ $('walkList').innerHTML=data.walks.length?data.walks.map(w=>`<div class="entry"><h3>${dateText(w.date)}</h3><p>${fmt(w.duration)} · ${(Number(w.distance)||0).toFixed(2)} miles · ${(w.route||[]).length} GPS points</p>${w.note?`<p>${esc(w.note)}</p>`:''}<div class="actions"><button class="secondary" onclick="viewWalk('${w.id}')">View route</button><button class="danger" onclick="deleteWalk('${w.id}')">Delete walk</button></div></div>`).join(''):"<div class='empty'>No completed walks yet. Start a walk when you're ready.</div>";
 }
-update();
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function dateText(s){const d=new Date(s);return isNaN(d)?'Date not recorded':d.toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'});}
+function addBird(){const name=$('birdName').value.trim();if(!name){alert('Enter a bird name first.');return;}data.birds.unshift({id:crypto.randomUUID(),name,number:Math.max(1,Number($('birdNumber').value)||1),location:$('birdLocation').value.trim(),notes:$('birdNotes').value.trim(),date:new Date().toISOString()});['birdName','birdLocation','birdNotes'].forEach(id=>$(id).value='');$('birdNumber').value=1;save();}
+function deleteBird(id){if(confirm('Delete this bird sighting?')){data.birds=data.birds.filter(b=>b.id!==id);save();}}
+function editBird(id){const b=data.birds.find(x=>x.id===id);if(!b)return;const n=prompt('Bird name:',b.name);if(n===null)return;if(!n.trim())return alert('Bird name cannot be empty.');b.name=n.trim();const count=prompt('Number seen:',b.number);if(count!==null)b.number=Math.max(1,Number(count)||1);const note=prompt('Notes:',b.notes||'');if(note!==null)b.notes=note;save();}
+function deleteWalk(id){if(confirm('Permanently delete this walk?')){data.walks=data.walks.filter(w=>w.id!==id);save();}}
+function viewWalk(id){const w=data.walks.find(x=>x.id===id);if(!w)return;showTab('walk');session={...w,status:'finished',elapsed:w.duration,segmentStart:Date.now()};setSessionUI();$('startBtn').classList.add('hidden');$('finishBtn').classList.add('hidden');$('pauseBtn').classList.add('hidden');$('resumeBtn').classList.add('hidden');$('discardBtn').classList.add('hidden');$('walkNote').value=w.note||'';setTimeout(()=>{initMap();if(map&&w.route?.length){line.setLatLngs(w.route.map(p=>[p.lat,p.lon]));map.fitBounds(line.getBounds(),{padding:[20,20]});}},200);session=null;}
+function exportData(){const blob=new Blob([JSON.stringify({format:'birding-wellbeing-backup-v2',exportedAt:new Date().toISOString(),...data},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='birding-wellbeing-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);}
+function importData(file){const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.walks)||!Array.isArray(x.birds))throw Error();if(!confirm(`Import ${x.walks.length} walks and ${x.birds.length} sightings? Existing records will be kept and duplicates skipped.`))return;const ids=new Set([...data.walks,...data.birds].map(a=>a.id));data.walks=[...x.walks.filter(a=>!ids.has(a.id)),...data.walks];data.birds=[...x.birds.filter(a=>!ids.has(a.id)),...data.birds];save();alert('Backup imported.');}catch(e){alert('That file is not a recognised Birding & Wellbeing backup.');}};r.readAsText(file);}
+$('today').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+$('startBtn').onclick=startWalk;$('homeStart').onclick=startWalk;$('pauseBtn').onclick=pauseWalk;$('resumeBtn').onclick=resumeWalk;$('finishBtn').onclick=finishWalk;$('discardBtn').onclick=discardWalk;$('addBird').onclick=addBird;$('exportBtn').onclick=exportData;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value='';};$('weatherRefresh').onclick=getPositionForWeather;
+load();render();setSessionUI();getPositionForWeather();
 </script>
-</body>
-</html>
+</body></html>
